@@ -1,0 +1,116 @@
+﻿
+    <Window x:Class="BatchRename.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BatchRename"
+        xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="750" Width="1200"
+        Loaded="Window_Loaded"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+    <DockPanel LastChildFill="True">
+        <Fluent:Ribbon DockPanel.Dock="Top">
+            <Fluent:RibbonTabItem Header="Home">
+                <Fluent:RibbonGroupBox Header="Project">
+                    <Fluent:Button Header="New" Icon="{materialDesign:PackIcon Kind=FolderPlusOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FolderPlusOutline,Size=30}"/>
+                    <Fluent:Button Header="Open" Icon="{materialDesign:PackIcon Kind=FolderOpenOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FolderOpenOutline, Size=30}"/>
+                    <Fluent:Button Header="Save" Icon="{materialDesign:PackIcon Kind=FolderDownloadOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FolderDownloadOutline, Size=30}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Preset">
+                    <Fluent:Button Header="Open" Icon="{materialDesign:PackIcon Kind=OpenInApp, Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=OpenInApp,Size=30}"/>
+                    <Fluent:Button Header="Save" Icon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=30}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Rename Rules" >
+                    <StackPanel Orientation="Vertical" Margin="0,8,0,0">
+                        <Fluent:ComboBox x:Name="rulesComboBox" Width="150" Height="25" VerticalAlignment="Center" 
+                                         ItemsSource="{Binding DataViewModel.AvailableRules, Mode=OneWay}"
+                                         Text="-- Select Rules --">
+                            <Fluent:ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </Fluent:ComboBox.ItemTemplate>
+                        </Fluent:ComboBox>
+                        <TextBlock Text="Select Rules" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <Fluent:Button Name="addRuleButton" Header="Add Rules" Icon="{materialDesign:PackIcon Kind=Add, Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=Add, Size=30}" Click="addRuleButton_Click"/>
+                    <Fluent:Button Name="resetRulesButton" Header="Reset Rules" Icon="{materialDesign:PackIcon Kind=Replay,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=Replay,Size=30}" Click="resetRulesButton_Click" />
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Items Action">
+                    <StackPanel Orientation="Vertical">
+                        <Fluent:ComboBox Name="itemTypeComboBox" Width="150" Height="25" Margin="0,8,0,0"
+                                         ItemsSource="{Binding SettingsViewModel.ItemsType}"
+                                         Text="-- Choose items type --">
+                            <Fluent:ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"/>
+                                </DataTemplate>
+                            </Fluent:ComboBox.ItemTemplate>
+                        </Fluent:ComboBox>
+                        <TextBlock Text="Select file or folder" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <Fluent:Button Header="Add Items" Icon="{materialDesign:PackIcon Kind=FileDocumentAddOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FileDocumentAddOutline,Size=30}" 
+                                   Name="addItemsButton" Click="addItemsButton_Click"/>
+                    <Fluent:Button Header="Remove All Items" Icon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=30}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Batch Actions">
+                    <Fluent:Button Name="previewButton" Header="Preview" Icon="{materialDesign:PackIcon Kind=EyeOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=EyeOutline,Size=30}"
+                                   Click="previewButton_Click"/>
+                    <Fluent:Button Name="startButton" Header="Start" Icon="{materialDesign:PackIcon Kind=Play,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=Play,Size=30}"
+                                   Click="startButton_Click"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <DockPanel LastChildFill="True">
+            <DockPanel DockPanel.Dock="Left" HorizontalAlignment="Left" LastChildFill="True" Width="280"
+                       Margin="0,0,8,0">
+                <TextBlock Text="Rename Rules" Margin="8,0,0,0" DockPanel.Dock="Top"/>
+                <ListView x:Name="choseRulesListView" Margin="8,0,0,0" DockPanel.Dock="Bottom"
+                          ItemsSource="{Binding DataViewModel.ActiveRule}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RuleType}">
+                                :
+                                <Run Text="{Binding Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Right" Margin="8,0,0,0">
+                <TextBlock DockPanel.Dock="Top" Text="Items"
+                           Margin="8,0,0,0"/>
+                <ListView Name="itemsListView" ItemsSource="{Binding DataViewModel.Items}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Current Name" Width="200" 
+                                            DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="New Name" Width="200" 
+                                            DisplayMemberBinding="{Binding NewName}" />
+                            <GridViewColumn Header="Path" Width="300" 
+                                            DisplayMemberBinding="{Binding Path}" />
+                            <GridViewColumn Header="Result" Width="150" 
+                                            DisplayMemberBinding="{Binding Result}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </DockPanel>
+        </DockPanel>
+    </DockPanel>
+</Window>
