@@ -7,8 +7,8 @@ namespace Contract
     public interface IRule: ICloneable
     {
         string Rename(string origin);
-        IRule? Parse(string data);
         string RuleType { get; }
+        IRule? Parse(string data);
         bool HasParameter { get; }
     }
 
@@ -16,5 +16,6 @@ namespace Contract
     {
         ImmutableList<string> Keys { get; }
         List<string> Values { get; set; }
+        string Errors { get; }
     }
 }

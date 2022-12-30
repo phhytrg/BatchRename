@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,8 @@ namespace BatchRename
         private bool IsClosed = false;
         List<TextBox> textBoxes = new List<TextBox>();
         public List<string> Parameters { get; set; } = new List<string>();
+
+        private Regex _invalidCharacters = new Regex("[\\~#%&*{}/:<>?|\"-]");
         public OkCancelDialog(Point position)
         {
             InitializeComponent();
@@ -42,7 +45,12 @@ namespace BatchRename
                 }
                 else
                 {
-                    MessageBox.Show("You need to fill all fields", "Error");
+                    MessageBox.Show("You need to fill all fields", "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
+                }
+                if (_invalidCharacters.IsMatch(textBox.Text))
+                {
+                    MessageBox.Show("Filename must not contain " + _invalidCharacters.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
                     return;
                 }
             }
@@ -65,14 +73,14 @@ namespace BatchRename
         }
         public void GenerateInputField(List<string> fields)
         {
+            var stackPanel = new StackPanel() { Orientation = Orientation.Vertical};
             foreach (var field in fields)
             {
                 TextBlock textBlock = new TextBlock();
-                DockPanel.SetDock(textBlock, Dock.Top);
                 textBlock.Text = field;
                 textBlock.Height = 24;
                 textBlock.Margin = new Thickness(8, 0, 0, 0);
-                this.dockPanel.Children.Add(textBlock);
+                stackPanel.Children.Add(textBlock);
 
                 TextBox textBox = new TextBox(); 
                 Style style = new Style(typeof(TextBox), textBox.Style);
@@ -89,14 +97,15 @@ namespace BatchRename
                 style.Triggers.Add(trigger);
                 textBox.Style = style;  
 
-                DockPanel.SetDock(textBlock, Dock.Top);
-                this.dockPanel.Children.Add(textBox);
+                stackPanel.Children.Add(textBox);
                 textBox.Margin = new Thickness(8, 0, 8, 0);
                 textBox.Height = 28;
                 textBox.VerticalContentAlignment = VerticalAlignment.Center;
 
                 textBoxes.Add(textBox);
             }
+            DockPanel.SetDock(stackPanel, Dock.Top);
+            this.dockPanel.Children.Add(stackPanel);
         }
     }
 }

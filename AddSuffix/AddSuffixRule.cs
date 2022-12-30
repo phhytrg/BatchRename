@@ -4,44 +4,32 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace AddPrefixRule
+namespace AddSuffix
 {
-    public class AddPrefix : IRuleWithParameters
+    public class AddSuffix: IRuleWithParameters
     {
-        private string _prefix = "";
-        private string _errors = "";
-        public string RuleType => "AddPrefix";
+        public string _suffix = "";
+
+        public string RuleType => "AddSuffix";
+
         public bool HasParameter => true;
-        public ImmutableList<string> Keys => new List<string> { "Prefix"}.ToImmutableList();
-        public List<string> Values
-        {
-            get
-            {
-                return new List<string> { _prefix };
-            }
-            set
-            {
-                _prefix = value[0];
-            }
-        }
-        public string Errors => _errors;
 
-        public AddPrefix(string prefix)
+        public ImmutableList<string> Keys => new List<string> { "Suffix" }.ToImmutableList();
+        public AddSuffix() { }
+        public AddSuffix(string suffix)
         {
-            _prefix = prefix;
+            _suffix = suffix;
         }
-
-        public AddPrefix() { }
 
         public override string ToString()
         {
             string toString = "";
-            for(int i = 0; i < Keys.Count; i++)
+            for (int i = 0; i < Keys.Count; i++)
             {
                 toString += Keys[i];
                 toString += "=";
                 toString += Values[i];
-                if(i >= Keys.Count - 1)
+                if (i >= Keys.Count - 1)
                 {
                     break;
                 }
@@ -49,12 +37,27 @@ namespace AddPrefixRule
             }
             return toString;
         }
+
+        public List<string> Values
+        {
+            get
+            {
+                return new List<string> { _suffix };
+            }
+            set
+            {
+                _suffix = value[0];
+            }
+        }
+
+        public string Errors => "";
+
         public string Rename(string origin)
         {
             var builder = new StringBuilder();
-            builder.Append(_prefix);
-            builder.Append(" ");
             builder.Append(origin);
+            builder.Append(" ");
+            builder.Append(_suffix);
 
             string result = builder.ToString();
             return result;
@@ -65,13 +68,14 @@ namespace AddPrefixRule
             return MemberwiseClone();
         }
 
-        public IRule Parse(string data)
+        public IRule? Parse(string data)
         {
             var pairs = data.Split(new string[] { "=" },
                 StringSplitOptions.None);
-            var prefix = pairs[1];
-            var rule = new AddPrefix(prefix);
-            rule._prefix = pairs[1];
+
+            var suffix = pairs[1];
+
+            var rule = new AddSuffix(suffix);
             return rule;
         }
     }

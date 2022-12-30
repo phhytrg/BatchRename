@@ -9,23 +9,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "Contract\Contra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddPrefixRule", "AddPrefixRule\AddPrefixRule.csproj", "{0236E2A7-3DD6-43C2-8F54-DE81EBB348E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeExtension", "ChangeExtension\ChangeExtension.csproj", "{A465D9C2-2D70-40A5-BABB-A2852F0D224D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChangeExtension", "ChangeExtension\ChangeExtension.csproj", "{A465D9C2-2D70-40A5-BABB-A2852F0D224D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCounterToEnd", "AddCounterToEnd\AddCounterToEnd.csproj", "{C5E3C49C-A164-49BF-BC01-025ACBFBFBA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCounterToEnd", "AddCounterToEnd\AddCounterToEnd.csproj", "{C5E3C49C-A164-49BF-BC01-025ACBFBFBA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnceSpace", "OnceSpace\OnceSpace.csproj", "{062B9CBC-C631-48E9-8642-595BE5FD2B10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnceSpace", "OnceSpace\OnceSpace.csproj", "{062B9CBC-C631-48E9-8642-595BE5FD2B10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveAllSpace", "RemoveAllSpace\RemoveAllSpace.csproj", "{BFAF9610-0540-4A26-9D85-EE1F1914BF05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoveAllSpace", "RemoveAllSpace\RemoveAllSpace.csproj", "{BFAF9610-0540-4A26-9D85-EE1F1914BF05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplaceCharacter", "ReplaceCharacter\ReplaceCharacter.csproj", "{A5E1F922-37D4-4214-9FC6-61A325B59006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReplaceCharacter", "ReplaceCharacter\ReplaceCharacter.csproj", "{A5E1F922-37D4-4214-9FC6-61A325B59006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddSuffix", "AddSuffix\AddSuffix.csproj", "{BB33CFF6-3AA7-4884-8914-EC95C1DA13AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddSuffix", "AddSuffix\AddSuffix.csproj", "{BB33CFF6-3AA7-4884-8914-EC95C1DA13AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToUpperCase", "ToUpperCase\ToUpperCase.csproj", "{D7350FFB-8EA0-4D71-A7F6-B9D5C4F23FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToUpperCase", "ToUpperCase\ToUpperCase.csproj", "{D7350FFB-8EA0-4D71-A7F6-B9D5C4F23FC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToLowerCase", "ToLowerCase\ToLowerCase.csproj", "{C251A570-3B86-4D0C-A54E-F5D578ED039D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToLowerCase", "ToLowerCase\ToLowerCase.csproj", "{C251A570-3B86-4D0C-A54E-F5D578ED039D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PascalCase", "PascalCase\PascalCase.csproj", "{6FE839AE-C776-4D54-B633-97804E10A4F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PascalCase", "PascalCase\PascalCase.csproj", "{6FE839AE-C776-4D54-B633-97804E10A4F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCounterToStart", "AddCounterToStart\AddCounterToStart.csproj", "{654AED15-1CF6-4487-8770-E1C8A1876DB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{6FE839AE-C776-4D54-B633-97804E10A4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE839AE-C776-4D54-B633-97804E10A4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE839AE-C776-4D54-B633-97804E10A4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{654AED15-1CF6-4487-8770-E1C8A1876DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{654AED15-1CF6-4487-8770-E1C8A1876DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{654AED15-1CF6-4487-8770-E1C8A1876DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{654AED15-1CF6-4487-8770-E1C8A1876DB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,38 +1,34 @@
 using Contract;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Documents;
 
-namespace AddCounterToEnd
+namespace AddCounterToStart
 {
-    public class AddCounterToEnd : IRuleWithParameters
+    public class AddCounterToStart:IRuleWithParameters
     {
         private int _start = 0;
         private int _step = 0;
         private int _noDigits = 0;
         private int _current = 0;
         private string _errors = "";
-        public ImmutableList<string> Keys => new List<string>() {"Start","Step","NoDigits" }.ToImmutableList();
-        public string Errors => _errors;
+        public ImmutableList<string> Keys => new List<string>() { "Start", "Step", "NoDigits" }.ToImmutableList();
         public List<string> Values
         {
-            get => new List<string> { _start.ToString(), _step.ToString(), _noDigits.ToString() }; 
+            get => new List<string> { _start.ToString(), _step.ToString(), _noDigits.ToString() };
             set
             {
-                for(int i = 0; i < value.Count; i++)
+                for (int i = 0; i < value.Count; i++)
                 {
                     if (!Regex.IsMatch(value[i], @"^\d+$"))
                     {
                         _errors += Keys[i] + " must be a number\n";
                     }
                 }
-                if(_errors != "")
+                if (_errors != "")
                 {
                     return;
                 }
@@ -43,14 +39,8 @@ namespace AddCounterToEnd
             }
         }
 
-        public AddCounterToEnd()
-        {
-
-        }
-
-        public string RuleType => "AddCounterToEnd";
-
-        public AddCounterToEnd(int start, int step, int noDigits)
+        public AddCounterToStart() { }
+        public AddCounterToStart(int start, int step, int noDigits)
         {
             _start = start;
             _step = step;
@@ -61,7 +51,7 @@ namespace AddCounterToEnd
         {
             string toString = "";
             for (int i = 0; i < Keys.Count; i++)
-            {
+            {   
                 toString += Keys[i];
                 toString += "=";
                 toString += Values[i];
@@ -73,8 +63,11 @@ namespace AddCounterToEnd
             }
             return toString;
         }
+        public string RuleType => "AddCounterToStart";
 
         public bool HasParameter => true;
+
+        public string Errors => _errors;
 
         public object Clone()
         {
@@ -113,21 +106,15 @@ namespace AddCounterToEnd
                     }
                 }
             }
-            return new AddCounterToEnd(start, step, noDigits);
+            return new AddCounterToStart(start, step, noDigits);
         }
 
         public string Rename(string origin)
         {
             var builder = new StringBuilder();
-            string[] tokens = origin.Split('.');
-            builder.Append(tokens[0]);
-            builder.Append(" ");
             builder.Append(_current.ToString("D" + _noDigits));
-            if (tokens.Length >= 2)
-            {
-                builder.Append(".");
-                builder.Append(tokens[1]);
-            }
+            builder.Append(" ");
+            builder.Append(origin);
 
             _current += _step;
 

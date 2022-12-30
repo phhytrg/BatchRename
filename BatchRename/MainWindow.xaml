@@ -12,22 +12,35 @@
         Loaded="Window_Loaded"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+    <Window.Resources>
+        <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter"/>
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <Fluent:Ribbon DockPanel.Dock="Top">
             <Fluent:RibbonTabItem Header="Home">
                 <Fluent:RibbonGroupBox Header="Project">
-                    <Fluent:Button Header="New" Icon="{materialDesign:PackIcon Kind=FolderPlusOutline,Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=FolderPlusOutline,Size=30}"/>
-                    <Fluent:Button Header="Open" Icon="{materialDesign:PackIcon Kind=FolderOpenOutline,Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=FolderOpenOutline, Size=30}"/>
-                    <Fluent:Button Header="Save" Icon="{materialDesign:PackIcon Kind=FolderDownloadOutline,Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=FolderDownloadOutline, Size=30}"/>
+                    <Fluent:Button Name="newProjectButton" Header="New" LargeIcon="{materialDesign:PackIcon Kind=TextBoxPlusOutline,Size=30}"
+                                   Click="newProjectButton_Click"/>
+                    <Fluent:Button Name="openProjectButton" Header="Open" Icon="{materialDesign:PackIcon Kind=FolderOpenOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FolderOpenOutline, Size=30}"  Size="Large"
+                                   Click="openProjectButton_Click"/>
+                    <Fluent:Button Name="saveProjectButton" Header="Save" Icon="{materialDesign:PackIcon Kind=FolderDownloadOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FileDownloadOutline, Size=30}" 
+                                   Click="saveProjectButton_Click"/>
+                    <Fluent:Button Name="saveAsProjectButton" Header="Save As" Icon="{materialDesign:PackIcon Kind=FolderPlusOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FilePlusOutline,Size=30}" 
+                                   Click="saveAsProjectButton_Click"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Preset">
-                    <Fluent:Button Header="Open" Icon="{materialDesign:PackIcon Kind=OpenInApp, Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=OpenInApp,Size=30}"/>
-                    <Fluent:Button Header="Save" Icon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=30}"/>
+                    <Fluent:Button Name="openPresetButton" Header="Open" Icon="{materialDesign:PackIcon Kind=OpenInApp, Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=OpenInApp,Size=30}"
+                                   Click="openPresetButton_Click"/>
+                    <Fluent:Button Name="savePresetButton"  Header="Save" Icon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=ContentSaveOutline, Size=30}"
+                                   Click="savePresetButton_Click"/>
+                    <Fluent:Button Name="saveAsPresetButton" Header="Save As" Icon="{materialDesign:PackIcon Kind=ContentSaveSettingsOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=ContentSaveSettingsOutline, Size=30}"
+                                   Click="saveAsPresetButton_Click"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Rename Rules" >
                     <StackPanel Orientation="Vertical" Margin="0,8,0,0">
@@ -44,8 +57,12 @@
                     </StackPanel>
                     <Fluent:Button Name="addRuleButton" Header="Add Rules" Icon="{materialDesign:PackIcon Kind=Add, Size=15}"
                                    LargeIcon="{materialDesign:PackIcon Kind=Add, Size=30}" Click="addRuleButton_Click"/>
-                    <Fluent:Button Name="resetRulesButton" Header="Reset Rules" Icon="{materialDesign:PackIcon Kind=Replay,Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=Replay,Size=30}" Click="resetRulesButton_Click" />
+                    <Fluent:Button Name="resetRulesButton" Header="Remove All Rules" Icon="{materialDesign:PackIcon Kind=Replay,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="resetRulesButton_Click" />
+                    <Fluent:Button Name="importRuleButton" Header="Import Rules" Icon="{materialDesign:PackIcon Kind=Import,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=Import,Size=30}" Click="importRuleButton_Click"/>
+                    <Fluent:Button Name="refreshRuleButton" Header="Refresh Rules" LargeIcon="{materialDesign:PackIcon Kind=ArchiveRefreshOutline,Size=30}"
+                                   Click="refreshRuleButton_Click"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Items Action">
                     <StackPanel Orientation="Vertical">
@@ -63,8 +80,11 @@
                     <Fluent:Button Header="Add Items" Icon="{materialDesign:PackIcon Kind=FileDocumentAddOutline,Size=15}"
                                    LargeIcon="{materialDesign:PackIcon Kind=FileDocumentAddOutline,Size=30}" 
                                    Name="addItemsButton" Click="addItemsButton_Click"/>
-                    <Fluent:Button Header="Remove All Items" Icon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=15}"
-                                   LargeIcon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=30}"/>
+                    <Fluent:Button Header="Add Files From Directory" LargeIcon="{materialDesign:PackIcon Kind=ExpandAllOutline,Size=30}"
+                                   Name="addFromDirButton" Click="addFromDirButton_Click"/>
+                    <Fluent:Button Name="removeAllItemsButton" Header="Remove All Items" Icon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=15}"
+                                   LargeIcon="{materialDesign:PackIcon Kind=FileDocumentRemoveOutline,Size=30}"
+                                   Click="removeAllItemsButton_Click"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="Batch Actions">
                     <Fluent:Button Name="previewButton" Header="Preview" Icon="{materialDesign:PackIcon Kind=EyeOutline,Size=15}"
@@ -75,28 +95,105 @@
                                    Click="startButton_Click"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Options">
+                <Fluent:RibbonGroupBox Header="Save Preset Options">
+                    <Fluent:RadioButton Header="Save text file .txt" IsChecked="{Binding Path=DataViewModel.PresetSaveType, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                    <Fluent:RadioButton Header="Save json file .json" IsChecked="{Binding Path=DataViewModel.PresetSaveType, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=0}"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Batch Rename Options">
+                    <Fluent:RadioButton Header="Rename on the original file" IsChecked="{Binding Path=DataViewModel.BatchType, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=0}"/>
+                    <Fluent:RadioButton Header="Copy all files and move to new folder" IsChecked="{Binding Path=DataViewModel.BatchType, Converter={StaticResource radioBoolToIntConverter}, ConverterParameter=1}"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
+        <DockPanel DockPanel.Dock="Bottom" Height="25">
+            <TextBlock HorizontalAlignment="Right" Margin="0,0,16,0" 
+                       VerticalAlignment="Center" Text="{Binding DataViewModel.Status}"/>
+        </DockPanel>
+        
         <DockPanel LastChildFill="True">
             <DockPanel DockPanel.Dock="Left" HorizontalAlignment="Left" LastChildFill="True" Width="280"
                        Margin="0,0,8,0">
-                <TextBlock Text="Rename Rules" Margin="8,0,0,0" DockPanel.Dock="Top"/>
-                <ListView x:Name="choseRulesListView" Margin="8,0,0,0" DockPanel.Dock="Bottom"
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="toFirstButton" Content="{materialDesign:PackIcon Kind=ArrowUpDropCircle,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="toFirstButton_Click" ToolTip="Move Rule to First"/>
+                    <Button Name="upButton" Content="{materialDesign:PackIcon Kind=ArrowUpBoldBox,Size=25}" Margin="5" 
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="upButton_Click" ToolTip="Move Rule to Next"/>
+                    <Button Name="downButton" Content="{materialDesign:PackIcon Kind=ArrowDownBoldBox,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="downButton_Click" ToolTip="Move Rule to Previous"/>
+                    <Button Name="toLastButton" Content="{materialDesign:PackIcon Kind=ArrowDownDropCircle,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="toLastButton_Click" ToolTip="Move Rule to Last"/>
+                </StackPanel>
+                <TextBlock Text="Rename Rules" Margin="8,0,0,0" DockPanel.Dock="Top" Foreground="DarkGray"/>
+                <ListView x:Name="rulesChosenListView" Margin="8,0,0,0" DockPanel.Dock="Bottom"
                           ItemsSource="{Binding DataViewModel.ActiveRule}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding RuleType}">
-                                :
+                                <Run Text=" "/>
                                 <Run Text="{Binding Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem" x:Key="ItemStyle">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="true">
+                                    <Setter Property="Background" Value="LightSkyBlue"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <Border Name="Border" 
+                                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                                    Background="{TemplateBinding Background}">
+                                                    <ContentPresenter Content="{TemplateBinding Content}" 
+                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                        Margin="{TemplateBinding Padding}" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <ContextMenu x:Key="contextMenu">
+                            <MenuItem Header="Delete" Name="deleteRuleContextMenu" Click="deleteRuleContextMenu_Click" Icon="{materialDesign:PackIcon Kind=DeleteOutline}"/>
+                            <MenuItem Header="Edit Params" Name="editRuleParamsContextMenu" Click="editRuleParamsContextMenu_Click" Icon="{materialDesign:PackIcon Kind=Edit}"/>
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource ItemStyle}">
+                            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+                            <Setter Property="ContextMenu" Value="{StaticResource contextMenu}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </DockPanel>
             <DockPanel DockPanel.Dock="Right" Margin="8,0,0,0">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Name="toFirstItemsButton" Content="{materialDesign:PackIcon Kind=ArrowUpDropCircle,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="toFirstItemsButton_Click" ToolTip="Move Rule to First"/>
+                    <Button Name="upItemsButton" Content="{materialDesign:PackIcon Kind=ArrowUpBoldBox,Size=25}" Margin="5" 
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="upITemsButton_Click" ToolTip="Move Rule to Next"/>
+                    <Button Name="downItemsButton" Content="{materialDesign:PackIcon Kind=ArrowDownBoldBox,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="downItemsButton_Click" ToolTip="Move Rule to Previous"/>
+                    <Button Name="toLastItemsButton1" Content="{materialDesign:PackIcon Kind=ArrowDownDropCircle,Size=25}" Margin="5"
+                            Background="Transparent" Foreground="SteelBlue" BorderThickness="0"
+                            Click="toLastItemsButton_Click" ToolTip="Move Rule to Last"/>
+                </StackPanel>
                 <TextBlock DockPanel.Dock="Top" Text="Items"
-                           Margin="8,0,0,0"/>
-                <ListView Name="itemsListView" ItemsSource="{Binding DataViewModel.Items}">
+                           Margin="8,0,0,0" Foreground="DarkGray"/>
+                <ListView Name="itemsListView" ItemsSource="{Binding DataViewModel.Items}"
+                          Margin="0,0,8,0" Drop="DragAndDropItems" AllowDrop="True">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Current Name" Width="200" 
@@ -104,11 +201,22 @@
                             <GridViewColumn Header="New Name" Width="200" 
                                             DisplayMemberBinding="{Binding NewName}" />
                             <GridViewColumn Header="Path" Width="300" 
-                                            DisplayMemberBinding="{Binding Path}" />
-                            <GridViewColumn Header="Result" Width="150" 
-                                            DisplayMemberBinding="{Binding Result}" />
+                                            DisplayMemberBinding="{Binding Directory}" />
+                            <GridViewColumn Header="Errors" Width="150" 
+                                            DisplayMemberBinding="{Binding Errors}" />
                         </GridView>
                     </ListView.View>
+                    <ListView.Resources>
+                        <ContextMenu x:Key="contextMenu">
+                            <MenuItem Name="deleteItemContextMenu" Header="Delete" Icon="{materialDesign:PackIcon Kind=DeleteOutline}" 
+                                      Click="deleteItemContextMenu_Click"/>
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="ContextMenu" Value="{StaticResource contextMenu}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
             </DockPanel>
         </DockPanel>
