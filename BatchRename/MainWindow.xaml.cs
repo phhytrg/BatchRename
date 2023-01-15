@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.TextFormatting;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Path = System.IO.Path;
@@ -210,6 +211,7 @@ namespace BatchRename
         }
         private void importRuleButton_Click(object sender, RoutedEventArgs e)
         {
+            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
             var dialog = new OpenFileDialog();
 
             dialog.Filter = "DLL Rule (*.dll)|*.dll";
@@ -224,6 +226,12 @@ namespace BatchRename
             var msg = "";
             foreach (var dll in dlls)
             {
+                var filename = Path.GetFileName(dll);
+                if(File.Exists(baseDir + "/Rules/" + filename))
+                {
+                    continue;
+                }
+                File.Copy(dll, baseDir + "/Rules/" + filename);
                 var assembly = Assembly.LoadFile(dll);
                 var types = assembly.GetTypes();
 
@@ -246,6 +254,8 @@ namespace BatchRename
                     }
                 }
             }
+
+            DataViewModel.AvailableRules = new ObservableCollection<string>(RuleFactory.Instance().GetRulesType());
 
             if (msg != "")
             {
@@ -647,11 +657,11 @@ namespace BatchRename
 
         private async void saveProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DataViewModel.Items.Count == 0 && DataViewModel.ActiveRule.Count == 0)
-            {
-                MessageBox.Show("Nothing to save!!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            //if (DataViewModel.Items.Count == 0 && DataViewModel.ActiveRule.Count == 0)
+            //{
+            //    MessageBox.Show("Nothing to save!!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return;
+            //}
 
             if (DataViewModel.ProjectPath == "")
             {
@@ -671,11 +681,11 @@ namespace BatchRename
 
         private async void saveAsProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DataViewModel.Items.Count == 0 && DataViewModel.ActiveRule.Count == 0)
-            {
-                MessageBox.Show("Nothing to save!!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            //if (DataViewModel.Items.Count == 0 && DataViewModel.ActiveRule.Count == 0)
+            //{
+            //    MessageBox.Show("Nothing to save!!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //    return;
+            //}
 
             var dialog = new SaveFileDialog();
             dialog.Filter = "Project (*.project)|*.project";
@@ -1273,6 +1283,52 @@ namespace BatchRename
             {
                 DataViewModel.Items.RemoveAt(i);
             });
+        }
+
+        private async void Window_Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            string msg = "Do you want to save current process";
+
+            if (File.Exists("autosave.proj")){
+                var exitDialog = MessageBox.Show(msg, "Batch Rename", MessageBoxButton.YesNoCancel, 
+                    MessageBoxImage.Question, MessageBoxResult.Yes);
+
+                if(exitDialog == MessageBoxResult.Yes)
+                {
+                    var dialog = new SaveFileDialog();
+                    dialog.Filter = "Project (*.proj)|*.proj";
+
+                    if (dialog.ShowDialog() == false)
+                    {
+                        return;
+                    }
+
+                    DataViewModel.ProjectPath = dialog.FileName;
+                    var path = DataViewModel.ProjectPath;
+
+                    await SaveProject(path);
+
+                    File.Delete("autosave.proj");
+                    Environment.Exit(0);
+                }
+                else if (exitDialog == MessageBoxResult.No)
+                {
+                    Environment.Exit(0);
+                }
+
+            }
+            else
+            {
+                var result = MessageBox.Show(msg, "Batch Rename", MessageBoxButton.YesNo,
+                    MessageBoxImage.Question, MessageBoxResult.No);
+
+                if (MessageBoxResult.Yes == result)
+                {
+                    await SaveProject(DataViewModel.ProjectPath);
+                    Environment.Exit(0);
+                }
+            }
         }
     }
 }

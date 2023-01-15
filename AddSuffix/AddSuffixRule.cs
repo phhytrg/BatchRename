@@ -2,6 +2,7 @@ using Contract;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Text;
 
 namespace AddSuffix
@@ -55,9 +56,16 @@ namespace AddSuffix
         public string Rename(string origin)
         {
             var builder = new StringBuilder();
-            builder.Append(origin);
+            var tokens = origin.Split('.');
+            //var filename = Path.GetFileName(origin);
+            //var extension = Path.GetExtension(origin);
+            builder.Append(tokens[0]);
             builder.Append(" ");
             builder.Append(_suffix);
+            if (tokens.Length > 1)
+            {
+                builder.Append('.' + tokens[1]);
+            }
 
             string result = builder.ToString();
             return result;

@@ -11,7 +11,8 @@
         Title="MainWindow" Height="750" Width="1200"
         Loaded="Window_Loaded"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True">
+        WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True"
+        Closing="Window_Closing">
     <Window.Resources>
         <local:RadioBoolToIntConverter x:Key="radioBoolToIntConverter"/>
     </Window.Resources>

@@ -39,18 +39,28 @@ namespace BatchRename
         {
             foreach(var textBox in textBoxes)
             {
-                if(textBox.Text != "")
+                if (_invalidCharacters.IsMatch(textBox.Text))
+                {
+                    MessageBox.Show("Filename must not contain " + _invalidCharacters.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
+                    return;
+                }
+
+                for(int i = 0; i < textBox.Text.Length; i++)
+                {
+                    if(textBox.Text[i] < 32)
+                    {
+                        MessageBox.Show("Filename contains invalid character ", "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
+                        return;
+                    }
+                }
+
+                if (textBox.Text != "")
                 {
                     Parameters.Add(textBox.Text.ToString());
                 }
                 else
                 {
                     MessageBox.Show("You need to fill all fields", "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
-                    return;
-                }
-                if (_invalidCharacters.IsMatch(textBox.Text))
-                {
-                    MessageBox.Show("Filename must not contain " + _invalidCharacters.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.None, MessageBoxResult.None, MessageBoxOptions.DefaultDesktopOnly);
                     return;
                 }
             }
