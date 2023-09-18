@@ -59,6 +59,6 @@ PM> NuGet\Install-Package PropertyChanged.Fody
 15. Have some button handling changing the order of rules and files/folders
 16. Parameters's edit dialog is auto generated. Meaning its edit fields base on parameters of chosen rule.
 17. New file button to quickly start a new project
-## Expected Grade: 10
+
 ## Video demo link: 
 https://youtu.be/sYGlfdOT6H0
